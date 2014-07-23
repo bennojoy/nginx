@@ -1,14 +1,9 @@
 #{{ ansible_managed }}
-{% if ansible_os_family == 'RedHat' %} 
-user              nginx;
-{% endif %}
-{% if ansible_os_family == 'Debian' %} 
-user              www-data;
-{% endif %}
+user              {{ nginx_user }};
 
-worker_processes  {{ ansible_processor_count }};
+worker_processes  {{ nginx_worker_processes }};
 pid        /var/run/nginx.pid;
-
+worker_rlimit_nofile {{ nginx_worker_rlimit_nofile }};
 
 events {
     worker_connections  {{ nginx_max_clients }};
@@ -19,12 +14,9 @@ http {
 
         include /etc/nginx/mime.types;
         default_type application/octet-stream;
-{% for k,v in nginx_http_params.iteritems() %}
-        {{ k }}  {{ v }};
+{% for v in nginx_http_params %}
+        {{ v }};
 {% endfor %}
-
-        gzip on;
-        gzip_disable "msie6";
 
         include /etc/nginx/conf.d/*.conf;
         include /etc/nginx/sites-enabled/*;
