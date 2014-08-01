@@ -95,7 +95,8 @@ for details.
              location2: {name: /images/, try_files: "$uri $uri/ /index.html"}
 
 Note: Each site added is represented by list of hashes, and the configurations
-generated are populated in /etc/nginx/conf.d/
+generated are populated in `/etc/nginx/sites-available/` and have corresponding
+symlinks from `/etc/nginx/sites-enabled/`
 
 The file name for the specific site configurtaion is specified in the hash
 with the key "file_name", any valid server directives can be added to hash.
