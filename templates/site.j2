@@ -1,5 +1,10 @@
 server {
 
+{% if nginx_separete_logs_per_site == True %}
+	access_log {{ nginx_log_dir}}/{{ item.server.server_name}}-{{ nginx_access_log_name}};
+	error_log {{ nginx_log_dir}}/{{ item.server.server_name}}-{{ nginx_error_log_name}};
+{% endif %}
+
 {% for k,v in item.server.iteritems() %}
 {% if k.find('location') == -1 and k != 'file_name' %}
 {{ k }} {{ v }};
