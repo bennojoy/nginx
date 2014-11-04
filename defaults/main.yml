@@ -7,8 +7,11 @@ nginx_http_params:
   tcp_nopush: "on"
   tcp_nodelay: "on"
   keepalive_timeout: "65"
-  access_log: "/var/log/nginx/access.log"
-  error_log: "/var/log/nginx/error.log"
+
+nginx_log_dir: "/var/log/nginx"
+nginx_access_log_name: "access.log"
+nginx_error_log_name: "error.log"
+nginx_separete_logs_per_site: False
 
 nginx_sites:
  - server:
