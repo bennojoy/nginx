@@ -4,9 +4,17 @@
   yum: name=libselinux-python state=present
   when: ansible_os_family == "RedHat"
 
-- name: Copy the epel packages 
+- name: Check if epel-release exists in yum
+  command: yum info epel-release
+  register: epel_release_existed
+
+- name: Copy the epel packages
   copy: src=epel.repo dest=/etc/yum.repos.d/epel_ansible.repo
-  when: ansible_os_family == "RedHat"
+  when: ansible_os_family == "RedHat" and epel_release_existed.rc != 0
+
+- name: Install the epel-release repo
+  yum: name=epel-release state=present
+  when: ansible_os_family == "RedHat" and epel_release_existed.rc == 0
 
 - name: Install the nginx packages 
   yum: name={{ item }} state=present
