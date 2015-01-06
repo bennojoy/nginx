@@ -33,10 +33,15 @@ http {
 {% for upstream in nginx_upstreams %}
         upstream {{ upstream.name }} {
 {% for k,v in upstream.iteritems() %}
-{% if k != 'name' %}
+{% if k != 'name' and k != 'servers' %}
           {{ k }} {{ v }};
 {% endif %}
 {% endfor %}
+{% if 'servers' in upstream %}
+{% for server in upstream.servers %}
+          server {{ server }};
+{% endfor %}
+{% endif %}
         }
 {% endfor %}
 
