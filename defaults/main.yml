@@ -11,7 +11,7 @@ nginx_http_params:
 nginx_log_dir: "/var/log/nginx"
 nginx_access_log_name: "access.log"
 nginx_error_log_name: "error.log"
-nginx_separete_logs_per_site: False
+nginx_separate_logs_per_site: False
 
 nginx_sites:
  - server:
