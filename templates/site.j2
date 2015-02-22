@@ -6,17 +6,20 @@ server {
 {% endif %}
 
 {% for k,v in item.server.iteritems() %}
-{% if k.find('location') == -1 and k != 'file_name' %}
+{% if k != 'locations' and k != 'file_name' %}
 {{ k }} {{ v }};
 {% endif %}
-{% endfor %} 
+{% endfor %}
 
-{% for k,v in item.server.iteritems() if k.find('location') != -1 %}
-  location {{ v.name }} {
-{% for x,y in v.iteritems() if x != 'name' %} 
-      {{ x }} {{ y }};
+{% for loc in item.server.locations %}
+  location {{ loc.name }} {
+{% for x,y in loc.iteritems() if x != 'name' %}
+    {% if x == 'try_files' %}
+       {{ x }} {{ y | join(' ')}};
+    {% else %}
+       {{ x }} {{ y }};
+    {% endif %}
 {% endfor %}
   }
 {% endfor %}
 }
-
