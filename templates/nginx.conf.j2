@@ -30,6 +30,21 @@ http {
         gzip on;
         gzip_disable "msie6";
 
+{% for upstream in nginx_upstreams %}
+        upstream {{ upstream.name }} {
+{% for k,v in upstream.iteritems() %}
+{% if k != 'name' and k != 'servers' %}
+          {{ k }} {{ v }};
+{% endif %}
+{% endfor %}
+{% if 'servers' in upstream %}
+{% for server in upstream.servers %}
+          server {{ server }};
+{% endfor %}
+{% endif %}
+        }
+{% endfor %}
+
         include /etc/nginx/conf.d/*.conf;
         include /etc/nginx/sites-enabled/*;
 }

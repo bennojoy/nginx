@@ -129,6 +129,31 @@ directives.
               location1: {name: /, try_files: "$uri $uri/ /index.html"}
               location2: {name: /images/, try_files: "$uri $uri/ /index.html"}
 
+
+5) Install Nginx as proxy for another app
+
+    - hosts: all
+      roles:
+        - role: nginx,
+          nginx_upstreams:
+          - name: app_proxy
+            server: 127.0.0.1:3200
+          nginx_sites:
+           - server:
+              file_name: foo
+              server_name: 'ansible'
+              listen: 8080
+              location1:
+                - name: /
+                  proxy_pass: http://app_proxy/
+                  proxy_redirect:  'off'
+                  proxy_set_header: 'Host $host'
+                  proxy_set_header: 'X-Real-IP $remote_addr'
+                  proxy_set_header: 'X-Forwarded-For $proxy_add_x_forwarded_for'
+
+
+
+
 Dependencies
 ------------
 
