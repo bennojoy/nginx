@@ -1,3 +1,5 @@
+[![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-nginx-blue.svg?style=flat)](https://galaxy.ansible.com/list#/roles/2)
+
 nginx
 =====
 
