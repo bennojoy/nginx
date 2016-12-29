@@ -1,0 +1,36 @@
+---
+- name: Include CentOS-specific variables
+  include_vars: centos.yml
+  when: ansible_distribution == 'CentOS'
+
+- name: Include RHEL-specific variables
+  include_vars: rhel.yml
+  when: ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: Add the nginx Yum repository
+  yum_repository:
+    name: nginx
+    description: nginx release repository
+    baseurl: "{{ nginx_repo_location }}"
+    gpgkey: "{{ nginx_signing_key_url }}"
+    gpgcheck: true
+    state: present
+  when: nginx_install_from_nginx_repos
+
+- name: Add CentOS/RHEL 6 EPEL Yum repository
+  yum:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
+    state: present
+  when: nginx_install_from_nginx_repos == false and ansible_distribution_major_version == '6'
+
+- name: Add CentOS/RHEL 7 EPEL Yum repository
+  yum:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    state: present
+  when: nginx_install_from_nginx_repos == false and ansible_distribution_major_version == '7'
+
+- name: Install nginx packages and dependencies
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ nginx_packages }}"

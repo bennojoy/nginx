@@ -1,0 +1,7 @@
+---
+nginx_packages:
+  - python-selinux
+  - nginx
+
+nginx_repo_location: "http://nginx.org/packages/{% if nginx_install_mainline_nginx_release %}mainline/{% endif %}ubuntu/"
+
