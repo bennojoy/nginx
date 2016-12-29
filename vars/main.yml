@@ -1,13 +1,5 @@
 ---
-
 env:
  RUNLEVEL: 1
 
-redhat_pkg:
-  - nginx
-
-ubuntu_pkg:
-  - python-selinux
-  - nginx
-
-  
+nginx_signing_key_url: "https://nginx.org/keys/nginx_signing.key"

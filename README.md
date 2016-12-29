@@ -17,6 +17,13 @@ Role Variables
 The variables that can be passed to this role and a brief description about
 them are as follows.
 
+    # Install nginx from nginx repos or distribution repos
+    nginx_install_from_nginx_repos: false
+
+    # When installating from nginix repos, install the mainline (true) or 
+    # stable (false) release
+    nginx_install_mainline_nginx_release: false
+
     # The max clients allowed
     nginx_max_clients: 512                                
 

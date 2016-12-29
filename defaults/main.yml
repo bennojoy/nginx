@@ -1,4 +1,6 @@
 ---
+nginx_install_from_nginx_repos: false
+nginx_install_mainline_nginx_release: false
 
 nginx_max_clients: 512
 

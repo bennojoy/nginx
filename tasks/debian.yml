@@ -1,0 +1,34 @@
+---
+- name: Include Ubuntu-specific variables
+  include_vars: ubuntu.yml
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Include Debian-specific variables
+  include_vars: debian.yml
+  when: ansible_distribution == 'Debian'
+
+- name: Download nginx signing key
+  shell: "curl {{ nginx_signing_key_url }} -o /tmp/nginx_signing.key"
+  when: nginx_install_from_nginx_repos
+
+- name: Import nginx signing key
+  apt_key:
+    file: /tmp/nginx_signing.key
+    state: present
+  when: nginx_install_from_nginx_repos
+
+- name: Add the nginx project apt repo
+  apt_repository:
+    filename: "nginx"
+    repo: "deb {{ nginx_repo_location }} {{ ansible_distribution_release }} nginx"
+    state: present
+  when: nginx_install_from_nginx_repos
+
+- name: Install the nginx packages and dependencies
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+  with_items: "{{ nginx_packages }}"
+  environment: "{{ env }}"
+
